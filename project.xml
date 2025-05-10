@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="FlappyStarling" package="com.sample.flappystarling" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="FlappyStarling" />
+	
+	<source path="Source" />
+	
+	<haxelib name="starling" />
+	<haxelib name="openfl" />
+	
+	<assets path="Assets" rename="assets" />
+
+	<window width="320" height="480" background="#d1f4f7" fps="60" />
+	
+</project>
