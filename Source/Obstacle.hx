@@ -1,5 +1,6 @@
 package;
 
+import lime.media.FlashAudioContext;
 import starling.display.Image;
 import starling.textures.Texture;
 import starling.display.Sprite;
@@ -36,5 +37,34 @@ class Obstacle extends Sprite {
         addChild(top);
         addChild(bottom);
     }
+
+	public function collidesWithBird(birdX:Float, birdY:Float, birdRadius:Int) {
+		// check if bird is completely left or right of the obstacle
+		if (birdX + birdRadius < x - _radius || birdX - birdRadius > x + _radius)
+			return false;
+
+		var topY:Float = y - _gapHeight / 2;
+		var bottomY:Float = y + _gapHeight / 2;
+        
+		// check if bird is within gap
+		if (birdY < topY || birdY > bottomY)
+			return true;
+
+		var distX:Float = x - birdX;
+		var distY:Float;
+
+		// top trunk
+		distY = topY - birdY;
+		if (Math.sqrt(distX * distX + distY * distY) < _radius + birdRadius)
+			return true;
+
+		// bottom trunk
+		distY = bottomY - birdY;
+		if (Math.sqrt(distX * distX + distY * distY) < _radius + birdRadius)
+			return true;
+
+		// bird flies through in-between the circles
+		return false;
+	}
     
 }

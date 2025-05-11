@@ -27,7 +27,7 @@ class World extends Sprite {
     public static inline var BIRD_CRASHED:String = "birdCrashed";
 
     private static inline var OBSTACLE_DISTANCE:Int = 180;
-    private static inline var OBSTALCE_GAP_HEIGHT:Int = 170;
+    private static inline var OBSTALCE_GAP_HEIGHT:Int = 300;
     public static inline var OBSTACLE_PASSED:String = "obstaclePassed";
 
     private var _obstacles:Sprite;
@@ -95,7 +95,7 @@ class World extends Sprite {
         _bird = new MovieClip(birdTextures);
         _bird.pivotX = 46;
         _bird.pivotY = 45;
-        _bird.x = width / 3;
+        _bird.x = _width / 3;
         _bird.y = _height / 2;
 
         addChild(_bird);
@@ -135,6 +135,8 @@ class World extends Sprite {
 			_lastObstacleX = _currentX;
 			addObstalce();
 		}
+		var obstacle:Obstacle;
+		var numObstacles:Int = _obstacles.numChildren;
 
 		var i:Int = 0;
 		while (i < _obstacles.numChildren) {
@@ -184,6 +186,21 @@ class World extends Sprite {
             _bird.y = bottom;
             _birdVelocity = 0;
             collision = true;
+        } else {
+            for(i in 0..._obstacles.numChildren) {
+                var obstacle:Obstacle = cast(_obstacles.getChildAt(i), Obstacle);
+
+                if (!obstacle.passed && _bird.x > obstacle.x)
+                {
+                    obstacle.passed = true;
+                    dispatchEventWith(OBSTACLE_PASSED, true);
+                }
+
+                if (obstacle.collidesWithBird(_bird.x, _bird.y, BIRD_RADIUS)) {
+                    collision = true;
+                    break;
+                }
+            }
         }
 
         if (collision) {
